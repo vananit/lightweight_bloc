@@ -9,10 +9,10 @@ typedef BlocListenerFunction<T extends Bloc<M>, M> = void Function(
 
 class BlocListener<T extends Bloc<M>, M> extends StatefulWidget {
   final Widget child;
-  final T bloc;
-  final BlocListenerFunction<T, M> listener;
+  final T? bloc;
+  final BlocListenerFunction<T, M>? listener;
 
-  const BlocListener({Key key, @required this.child, this.listener, this.bloc})
+  const BlocListener({Key? key, required this.child, this.listener, this.bloc})
       : super(key: key);
 
   @override
@@ -21,8 +21,8 @@ class BlocListener<T extends Bloc<M>, M> extends StatefulWidget {
 
 class _BlocListenerState<T extends Bloc<M>, M>
     extends State<BlocListener<T, M>> {
-  T _bloc;
-  StreamSubscription _subscription;
+  T? _bloc;
+  late StreamSubscription _subscription;
 
   @override
   void initState() {
@@ -30,13 +30,13 @@ class _BlocListenerState<T extends Bloc<M>, M>
     assert(
         _bloc != null && _bloc is T, "Bloc must be of type ${T.runtimeType}");
 
-    _subscription = _bloc.listen((state) {
+    _subscription = _bloc!.listen((state) {
       if (mounted) {
         assert(
             state is M, "${state.runtimeType} is not of type ${M.runtimeType}");
 
         if (widget.listener != null) {
-          widget.listener(context, _bloc, state);
+          widget.listener!(context, _bloc!, state);
         }
       }
     });

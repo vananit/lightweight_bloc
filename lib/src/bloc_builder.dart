@@ -6,10 +6,10 @@ typedef BlocWidgetBuilderFunction<T extends Bloc<M>, M> = Widget Function(
     BuildContext context, T bloc, M state);
 
 class BlocWidgetBuilder<T extends Bloc<M>, M> extends StatefulWidget {
-  final T bloc;
+  final T? bloc;
   final BlocWidgetBuilderFunction<T, M> builder;
 
-  const BlocWidgetBuilder({Key key, @required this.builder, this.bloc})
+  const BlocWidgetBuilder({Key? key, required this.builder, this.bloc})
       : super(key: key);
 
   @override
@@ -18,8 +18,8 @@ class BlocWidgetBuilder<T extends Bloc<M>, M> extends StatefulWidget {
 }
 
 class _BlocWidgetBuilderState<T extends Bloc<M>, M>
-    extends State<BlocWidgetBuilder<T, M>> {
-  T _bloc;
+    extends State<BlocWidgetBuilder<T, M?>> {
+  T? _bloc;
 
   @override
   void initState() {
@@ -31,9 +31,9 @@ class _BlocWidgetBuilderState<T extends Bloc<M>, M>
   Widget build(BuildContext context) {
     return StreamBuilder<M>(
       stream: _bloc,
-      initialData: _bloc.state,
+      initialData: _bloc!.state,
       builder: (context, snapshot) {
-        return widget.builder(context, _bloc, snapshot.data);
+        return widget.builder(context, _bloc!, snapshot.data);
       },
     );
   }
